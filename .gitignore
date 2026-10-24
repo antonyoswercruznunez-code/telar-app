@@ -1,0 +1,20 @@
+# Compilados y logs
+target/
+logs/
+*.log
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# Secretos locales (nunca subir claves)
+.env
+application-local.properties
+*.pfx
+
+# Respaldos de la base de datos (pueden contener datos de clientes)
+respaldos/
