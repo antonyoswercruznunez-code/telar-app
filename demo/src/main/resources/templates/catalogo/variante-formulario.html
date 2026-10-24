@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Nueva variante | Telar MX</title>
+    <link rel="stylesheet" th:href="@{/css/gestion.css}">
+    <link rel="icon" type="image/svg+xml" th:href="@{/img/logo-telar-mx.svg}">
+</head>
+<body>
+<div class="app-shell">
+    <aside th:replace="~{fragments/menu :: menu('/productos')}"></aside>
+    <main class="content content-narrow">
+        <header class="page-header">
+            <div><p class="eyebrow">Producto</p>
+                <h1>Nueva variante</h1>
+                <p class="subtitle" th:text="${producto['nombre']}">Producto</p></div>
+            <a class="button button-secondary" th:href="@{/productos/{id}/variantes(id=${producto['idProducto']})}">Volver</a>
+        </header>
+        <div class="notice error" th:if="${!#lists.isEmpty(errores)}"><strong>Revisa estos datos:</strong>
+            <ul>
+                <li th:each="error : ${errores}" th:text="${error}">Error</li>
+            </ul>
+        </div>
+        <form class="form-panel" method="post" th:action="@{/productos/{id}/variantes(id=${producto['idProducto']})}"
+              th:object="${variante}"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <section class="form-section"><h2>Variante y stock</h2>
+                <div class="form-grid">
+                    <label class="field">Color<input class="input" maxlength="30" required th:field="*{color}"
+                                                     type="text"></label><label class="field">Talla<input class="input"
+                                                                                                       maxlength="10"
+                                                                                                       required
+                                                                                                       th:field="*{talla}"
+                                                                                                       type="text"></label><label
+                        class="field">Material<input class="input" maxlength="50" th:field="*{material}"
+                                                     type="text"></label><label class="field">Stock inicial<input
+                        class="input" min="0" th:field="*{stockInicial}" type="number" value="0"></label><label
+                        class="field">Stock mínimo<input class="input" min="0" th:field="*{stockMinimo}" type="number"
+                                                         value="0"></label>
+                </div>
+            </section>
+            <div class="form-actions"><a class="button button-secondary"
+                                         th:href="@{/productos/{id}/variantes(id=${producto['idProducto']})}">Cancelar</a>
+                <button class="button button-primary" type="submit">Guardar variante</button>
+            </div>
+        </form>
+    </main>
+</div>
+</body>
+</html>

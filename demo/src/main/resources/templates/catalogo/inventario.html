@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Inventario | Telar MX</title>
+    <link rel="stylesheet" th:href="@{/css/inventario.css}">
+    <link rel="icon" type="image/svg+xml" th:href="@{/img/logo-telar-mx.svg}">
+</head>
+<body>
+<div class="layout">
+    <aside th:replace="~{fragments/menu :: menu('/inventario')}"></aside>
+    <main>
+        <div class="topline">
+            <div>
+                <p class="eyebrow">Panel de control</p>
+                <h1>Inventario</h1>
+                <p class="subtitle">Consulta productos, variantes y existencias.</p>
+            </div>
+            <div class="user-chip"><span class="avatar">T</span> Taller Telar MX</div>
+        </div>
+        <div class="notice error" th:if="${alertasStock > 0}">
+            ⚠ <strong th:text="${alertasStock}">0</strong> variante(s) están en su stock mínimo o por debajo. Revisa las filas marcadas en rojo y repón.
+        </div>
+        <section aria-label="Resumen del inventario" class="cards">
+            <article class="card">
+                <div class="card-label">Productos registrados</div>
+                <div class="card-value" th:text="${totalProductos}">0</div>
+                <p class="card-note">Modelos en el catálogo</p></article>
+            <article class="card">
+                <div class="card-label">Variantes</div>
+                <div class="card-value" th:text="${totalVariantes}">0</div>
+                <p class="card-note">Combinaciones de color y talla</p></article>
+            <article class="card alert">
+                <div class="card-label">Alertas de stock</div>
+                <div class="card-value" th:text="${alertasStock}">0</div>
+                <p class="card-note">Existencias en mínimo o por debajo</p></article>
+        </section>
+        <section class="panel">
+            <div class="panel-head">
+                <h2>Productos y existencias</h2>
+                <div class="inventory-tools">
+                    <div aria-label="Filtrar por estado del stock" class="stock-filter" role="group">
+                        <button aria-pressed="true" class="filter-button active" data-stock-filter="all" type="button">
+                            Todo
+                        </button>
+                        <button aria-pressed="false" class="filter-button" data-stock-filter="low" type="button">Bajo el
+                            mínimo <span class="filter-count" th:text="${alertasStock}">0</span></button>
+                    </div>
+                    <input aria-label="Buscar en inventario" class="search" id="filtro" placeholder="Buscar producto, color o talla…"
+                           type="search">
+                </div>
+            </div>
+            <div class="table-wrap" th:if="${!#lists.isEmpty(articulos)}">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Categoría</th>
+                        <th>Variante</th>
+                        <th>Material</th>
+                        <th>Precio</th>
+                        <th>Disponible</th>
+                        <th>Mínimo</th>
+                    </tr>
+                    </thead>
+                    <tbody id="filas">
+                    <tr th:attr="data-low-stock=${articulo.stockDisponible le articulo.stockMinimo}"
+                        th:each="articulo : ${articulos}">
+                        <td><span class="product-name" th:text="${articulo.nombre}">Producto</span></td>
+                        <td><span class="pill"
+                                  th:text="${articulo.categoria != null ? articulo.categoria : 'Sin categoría'}">Categoría</span>
+                        </td>
+                        <td><span th:if="${articulo.color != null}" th:text="|${articulo.color} / ${articulo.talla}|">Variante</span><span
+                                class="sub" th:if="${articulo.color == null}">Sin variantes registradas</span></td>
+                        <td th:text="${articulo.material != null ? articulo.material : '—'}">—</td>
+                        <td th:text="|S/ ${articulo.precio}|">S/ 0.00</td>
+                        <td><span class="stock"
+                                  th:classappend="${articulo.stockDisponible le articulo.stockMinimo} ? ' low' : ''"
+                                  th:text="${articulo.stockDisponible}">0</span></td>
+                        <td th:text="${articulo.stockMinimo}">0</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="filtered-empty" hidden id="sinResultados">No hay productos que coincidan con estos
+                    filtros.</p>
+            </div>
+            <div class="empty" th:if="${#lists.isEmpty(articulos)}"><strong>Aún no hay productos</strong>Cuando cargues
+                productos en la base, aparecerán aquí junto con sus variantes y existencias.
+            </div>
+            <div class="foot" th:text="|Mostrando ${#lists.size(articulos)} variantes de producto|">Mostrando 0
+                variantes
+            </div>
+        </section>
+    </main>
+</div>
+<script defer th:src="@{/js/inventario.js}"></script>
+</body>
+</html>

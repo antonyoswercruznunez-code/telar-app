@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Historial del cliente | Telar MX</title>
+    <link rel="stylesheet" th:href="@{/css/gestion.css}">
+    <link rel="icon" type="image/svg+xml" th:href="@{/img/logo-telar-mx.svg}">
+</head>
+<body>
+<div class="app-shell">
+    <aside th:replace="~{fragments/menu :: menu('/clientes')}"></aside>
+    <main class="content">
+        <header class="page-header">
+            <div><p class="eyebrow">Clientes</p>
+                <h1 th:text="|Historial de ${historial.cliente().nombre} ${historial.cliente().apellido != null ? historial.cliente().apellido : ''}|">Historial</h1>
+                <p class="subtitle" th:text="|${historial.cliente().tipoDocumento} ${historial.cliente().numeroDocumento}|">DNI</p></div>
+            <a class="button button-secondary" th:href="@{/clientes}">Volver</a></header>
+        <section class="summary-grid">
+            <article class="summary-card"><span>Pedidos</span><strong th:text="${#lists.size(historial.pedidos())}">0</strong></article>
+            <article class="summary-card"><span>Ventas</span><strong th:text="${#lists.size(historial.ventas())}">0</strong></article>
+            <article class="summary-card"><span>Total comprado</span><strong th:text="${#numbers.formatDecimal(historial.totalComprado(), 1, 2)}">0.00</strong></article>
+            <article class="summary-card"><span>Saldo pendiente</span><strong th:text="${#numbers.formatDecimal(historial.saldoPendiente(), 1, 2)}">0.00</strong></article>
+        </section>
+        <section class="panel">
+            <div class="panel-toolbar"><h2>Pedidos</h2></div>
+            <div class="table-scroll" th:if="${!#lists.isEmpty(historial.pedidos())}">
+                <table>
+                    <thead><tr><th>N.º</th><th>Fecha</th><th>Descripción</th><th>Estado</th><th>Entrega</th></tr></thead>
+                    <tbody>
+                    <tr th:each="p : ${historial.pedidos()}">
+                        <td th:text="${p['id']}">1</td>
+                        <td th:text="${p['fecha']}">—</td>
+                        <td th:text="${p['descripcion'] != null ? p['descripcion'] : '—'}">—</td>
+                        <td><span class="status-badge" th:text="${p['estado']}">Pendiente</span></td>
+                        <td th:text="${p['entrega'] != null ? p['entrega'] : '—'}">—</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="empty-state" th:if="${#lists.isEmpty(historial.pedidos())}"><strong>Sin pedidos</strong><span>Este cliente aún no tiene pedidos.</span></div>
+        </section>
+        <section class="panel">
+            <div class="panel-toolbar"><h2>Ventas</h2></div>
+            <div class="table-scroll" th:if="${!#lists.isEmpty(historial.ventas())}">
+                <table>
+                    <thead><tr><th>N.º</th><th>Fecha</th><th>Tipo</th><th>Total</th><th>Saldo</th><th>Estado de pago</th></tr></thead>
+                    <tbody>
+                    <tr th:each="v : ${historial.ventas()}">
+                        <td th:text="${v['id']}">1</td>
+                        <td th:text="${v['fecha']}">—</td>
+                        <td th:text="${v['tipo']}">—</td>
+                        <td th:text="${#numbers.formatDecimal(v['total'], 1, 2)}">0.00</td>
+                        <td th:text="${v['saldo'] != null ? #numbers.formatDecimal(v['saldo'], 1, 2) : '—'}">0.00</td>
+                        <td><span class="status-badge" th:text="${v['estadoPago']}">Pagado</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="empty-state" th:if="${#lists.isEmpty(historial.ventas())}"><strong>Sin ventas</strong><span>Este cliente aún no tiene ventas.</span></div>
+        </section>
+    </main>
+</div>
+</body>
+</html>

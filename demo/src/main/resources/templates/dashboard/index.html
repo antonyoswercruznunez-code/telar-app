@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Dashboard | Telar MX</title>
+    <link rel="stylesheet" th:href="@{/css/gestion.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="icon" type="image/svg+xml" th:href="@{/img/logo-telar-mx.svg}">
+</head>
+<body th:data-datos-url="@{/dashboard/datos}" th:data-base="@{/}">
+<div class="app-shell">
+    <aside th:replace="~{fragments/menu :: menu('/dashboard')}"></aside>
+    <main class="content">
+        <header class="page-header">
+            <div><p class="eyebrow">Panel de control</p>
+                <h1>Dashboard</h1>
+                <p class="subtitle">Resumen del negocio en tiempo real.</p></div>
+            <div class="dash-head-actions">
+                <span class="dash-status" id="dash-status">Cargando…</span>
+                <button class="button button-secondary" id="dash-actualizar" type="button">↻ Actualizar</button>
+            </div>
+        </header>
+
+        <section class="kpi-grid" aria-label="Indicadores">
+            <article class="kpi kpi-accent"><div class="kpi-label">Ventas de hoy</div>
+                <div class="kpi-value skeleton" data-kpi="ventasHoy">S/ 0.00</div>
+                <div class="kpi-note" data-kpi="ventasHoyNota">&nbsp;</div></article>
+            <article class="kpi"><div class="kpi-label">Ventas del mes</div>
+                <div class="kpi-value skeleton" data-kpi="ventasMes">S/ 0.00</div>
+                <div class="kpi-note" data-kpi="ventasMesNota">&nbsp;</div></article>
+            <article class="kpi"><div class="kpi-label">Por cobrar</div>
+                <div class="kpi-value skeleton" data-kpi="saldoPorCobrar">S/ 0.00</div>
+                <div class="kpi-note">Saldos pendientes de pago</div></article>
+            <article class="kpi" id="kpi-pedidos"><div class="kpi-label">Pedidos activos</div>
+                <div class="kpi-value skeleton" data-kpi="pedidosActivos">0</div>
+                <div class="kpi-note" data-kpi="pedidosAtrasadosNota">&nbsp;</div></article>
+            <article class="kpi" id="kpi-stock"><div class="kpi-label">Alertas de stock</div>
+                <div class="kpi-value skeleton" data-kpi="alertasStock">0</div>
+                <div class="kpi-note">Variantes en su mínimo o menos</div></article>
+            <article class="kpi"><div class="kpi-label">Clientes activos</div>
+                <div class="kpi-value skeleton" data-kpi="clientesActivos">0</div>
+                <div class="kpi-note">Registrados en el sistema</div></article>
+        </section>
+
+        <section class="quick-actions" aria-label="Accesos rápidos">
+            <a class="button button-primary" th:href="@{/gestion/venta/nuevo}">＋ Nueva venta</a>
+            <a class="button button-secondary" th:href="@{/gestion/pedido/nuevo}">＋ Nuevo pedido</a>
+            <a class="button button-secondary" th:href="@{/clientes/nuevo}">＋ Nuevo cliente</a>
+            <a class="button button-secondary" th:href="@{/pedidos/seguimiento}">Seguimiento de pedidos</a>
+            <a class="button button-secondary" th:href="@{/inventario}">Inventario</a>
+            <a class="button button-secondary" th:href="@{/reportes}">Reportes</a>
+        </section>
+
+        <section class="dash-grid">
+            <article class="panel dash-panel"><h2>Ventas de los últimos 7 días</h2>
+                <div class="bars" id="grafico-ventas"></div></article>
+            <article class="panel dash-panel"><h2>Pedidos por estado</h2>
+                <div id="grafico-estados"></div></article>
+        </section>
+
+        <section class="dash-grid-3">
+            <article class="panel dash-panel"><h2>Pedidos por entregar</h2>
+                <ul class="mini-list" id="lista-pedidos"></ul></article>
+            <article class="panel dash-panel"><h2>Stock bajo</h2>
+                <ul class="mini-list" id="lista-stock"></ul></article>
+            <article class="panel dash-panel"><h2>Últimas ventas</h2>
+                <ul class="mini-list" id="lista-ventas"></ul></article>
+        </section>
+    </main>
+</div>
+<script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

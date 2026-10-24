@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title th:text="${edicion} ? 'Editar cliente | Telar MX' : 'Nuevo cliente | Telar MX'">Cliente | Telar MX</title>
+    <link rel="stylesheet" th:href="@{/css/gestion.css}">
+    <link rel="icon" type="image/svg+xml" th:href="@{/img/logo-telar-mx.svg}">
+</head>
+<body>
+<div class="app-shell">
+    <aside th:replace="~{fragments/menu :: menu('/clientes')}"></aside>
+    <main class="content content-narrow">
+        <header class="page-header">
+            <div><p class="eyebrow">Relaciones</p>
+                <h1 th:text="${edicion} ? 'Editar cliente' : 'Registrar cliente'">Registrar cliente</h1>
+                <p class="subtitle">Los campos con * son obligatorios.</p></div>
+            <a class="button button-secondary" th:href="@{/clientes}">Volver</a></header>
+        <div class="notice error" th:if="${!#lists.isEmpty(errores)}"><strong>Revisa estos datos:</strong>
+            <ul>
+                <li th:each="error : ${errores}" th:text="${error}">Error</li>
+            </ul>
+        </div>
+        <form class="form-panel" method="post" th:action="${edicion} ? @{/clientes/{id}/editar(id=${idCliente})} : @{/clientes}" th:object="${cliente}"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <section class="form-section"><h2>Datos del cliente</h2>
+                <div class="form-grid">
+                    <label class="field">Tipo de cliente<select class="input" th:field="*{tipoCliente}">
+                        <option value="Persona">Persona</option>
+                        <option value="Empresa">Empresa</option>
+                    </select></label><label class="field">Tipo de documento *<select class="input"
+                                                                                     required
+                                                                                     th:field="*{tipoDocumento}">
+                    <option value="DNI">DNI</option>
+                    <option value="RUC">RUC</option>
+                    <option value="CE">Carné de extranjería</option>
+                    <option value="Pasaporte">Pasaporte</option>
+                </select></label>
+                    <label class="field">Número de documento *<input class="input" maxlength="20"
+                                                                     required th:field="*{numeroDocumento}"
+                                                                     type="text"></label><label class="field">Nombre
+                    *<input class="input" maxlength="100" required th:field="*{nombre}" type="text"></label><label
+                        class="field">Apellido<input class="input" maxlength="100" th:field="*{apellido}"
+                                                     type="text"></label><label class="field">Razón social<input
+                        class="input" maxlength="150" th:field="*{razonSocial}" type="text"></label><label
+                        class="field">Teléfono<input class="input" maxlength="20" th:field="*{telefono}"
+                                                     type="tel"></label><label class="field">Correo<input
+                        class="input" maxlength="100" th:field="*{correo}" type="email"></label><label class="field">Persona
+                    de contacto<input class="input" maxlength="100" th:field="*{personaContacto}"
+                                      type="text"></label><label class="field field-wide">Dirección<input
+                        class="input" maxlength="200" th:field="*{direccion}" type="text"></label>
+                </div>
+            </section>
+            <div class="form-actions"><a class="button button-secondary" th:href="@{/clientes}">Cancelar</a>
+                <button class="button button-primary" type="submit" th:text="${edicion} ? 'Guardar cambios' : 'Registrar cliente'">Registrar cliente</button>
+            </div>
+        </form>
+    </main>
+</div>
+</body>
+</html>

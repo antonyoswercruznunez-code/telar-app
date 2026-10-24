@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Variantes | Telar MX</title>
+    <link rel="stylesheet" th:href="@{/css/gestion.css}">
+    <link rel="icon" type="image/svg+xml" th:href="@{/img/logo-telar-mx.svg}">
+</head>
+<body>
+<div class="app-shell">
+    <aside th:replace="~{fragments/menu :: menu('/productos')}"></aside>
+    <main class="content">
+        <header class="page-header">
+            <div><p class="eyebrow">Catálogo</p>
+                <h1>Variantes</h1>
+                <p class="subtitle" th:text="${producto['nombre']}">Producto</p></div>
+            <div class="header-actions"><a class="button button-secondary" th:href="@{/productos}">Volver a
+                productos</a><a class="button button-primary"
+                                th:href="@{/productos/{id}/variantes/nueva(id=${producto['idProducto']})}">＋ Nueva
+                variante</a></div>
+        </header>
+        <div class="notice success" th:if="${mensaje}" th:text="${mensaje}"></div>
+        <section class="panel">
+            <div class="panel-toolbar"><h2>Color, talla y existencias</h2></div>
+            <div class="table-scroll" th:if="${!#lists.isEmpty(variantes)}">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Color</th>
+                        <th>Talla</th>
+                        <th>Material</th>
+                        <th>Disponible</th>
+                        <th>Mínimo</th>
+                        <th>Estado</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="v : ${variantes}">
+                        <td th:text="${v['color']}">Color</td>
+                        <td th:text="${v['talla']}">Talla</td>
+                        <td th:text="${v['material'] != null ? v['material'] : '—'}">—</td>
+                        <td th:text="${v['disponible']}">0</td>
+                        <td th:text="${v['minimo']}">0</td>
+                        <td><span class="status-badge"
+                                  th:classappend="${v['disponible'] le v['minimo']} ? ' status-low' : ' status-ok'"
+                                  th:text="${v['disponible'] le v['minimo']} ? 'Bajo el mínimo' : 'Disponible'">Estado</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="empty-state" th:if="${#lists.isEmpty(variantes)}"><strong>Sin variantes</strong><span>Agrega una combinación de color, talla y material.</span>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+</html>

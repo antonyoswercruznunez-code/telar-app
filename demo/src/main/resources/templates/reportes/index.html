@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Reportes | Telar MX</title>
+    <link rel="stylesheet" th:href="@{/css/gestion.css}">
+    <link rel="icon" type="image/svg+xml" th:href="@{/img/logo-telar-mx.svg}">
+</head>
+<body>
+<div class="app-shell">
+    <aside th:replace="~{fragments/menu :: menu('/reportes')}"></aside>
+    <main class="content">
+        <header class="page-header">
+            <div><p class="eyebrow">Información</p>
+                <h1>Reportes</h1>
+                <p class="subtitle">Descarga la información en Excel o PDF.</p></div></header>
+
+        <section class="panel">
+            <form class="panel-toolbar" method="get" th:action="@{/reportes/ventas}">
+                <h2>Ventas por rango de fechas</h2>
+                <div class="toolbar-actions">
+                    <label>Desde <input class="input" name="desde" required type="date" th:value="${desde}"></label>
+                    <label>Hasta <input class="input" name="hasta" required type="date" th:value="${hasta}"></label>
+                    <select class="input" name="formato"><option value="xlsx">Excel</option><option value="pdf">PDF</option></select>
+                    <button class="button button-primary" type="submit">Descargar</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel">
+            <form class="panel-toolbar" method="get" th:action="@{/reportes/pedidos}">
+                <h2>Pedidos y su estado</h2>
+                <div class="toolbar-actions">
+                    <select class="input" name="estado">
+                        <option value="">Todos los estados</option>
+                        <option th:each="e : ${estados}" th:value="${e}" th:text="${e}">Estado</option>
+                    </select>
+                    <select class="input" name="formato"><option value="xlsx">Excel</option><option value="pdf">PDF</option></select>
+                    <button class="button button-primary" type="submit">Descargar</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel">
+            <form class="panel-toolbar" method="get" th:action="@{/reportes/inventario}">
+                <h2>Stock disponible</h2>
+                <div class="toolbar-actions">
+                    <select class="input" name="formato"><option value="xlsx">Excel</option><option value="pdf">PDF</option></select>
+                    <button class="button button-primary" type="submit">Descargar</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+            <form class="panel-toolbar" method="get" th:action="@{/reportes/insumos-bajos}">
+                <h2>Insumos con stock bajo</h2>
+                <div class="toolbar-actions">
+                    <select class="input" name="formato"><option value="xlsx">Excel</option><option value="pdf">PDF</option></select>
+                    <button class="button button-primary" type="submit">Descargar</button>
+                </div>
+            </form>
+        </section>
+    </main>
+</div>
+</body>
+</html>

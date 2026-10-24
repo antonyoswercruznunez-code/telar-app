@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title th:text="${edicion} ? 'Editar producto | Telar MX' : 'Nuevo producto | Telar MX'">Producto | Telar MX</title>
+    <link rel="stylesheet" th:href="@{/css/gestion.css}">
+    <link rel="icon" type="image/svg+xml" th:href="@{/img/logo-telar-mx.svg}">
+</head>
+<body>
+<div class="app-shell">
+    <aside th:replace="~{fragments/menu :: menu('/productos')}"></aside>
+    <main class="content content-narrow">
+        <header class="page-header">
+            <div><p class="eyebrow">Catálogo</p>
+                <h1 th:text="${edicion} ? 'Editar producto' : 'Registrar producto'">Registrar producto</h1>
+                <p class="subtitle">Completa la información y guarda los cambios.</p></div>
+            <a class="button button-secondary" th:href="@{/productos}">Volver</a></header>
+        <div class="notice error" th:if="${!#lists.isEmpty(errores)}"><strong>Revisa estos datos:</strong>
+            <ul>
+                <li th:each="error : ${errores}" th:text="${error}">Error</li>
+            </ul>
+        </div>
+        <form class="form-panel" method="post" th:action="${edicion} ? @{/productos/{id}/editar(id=${idProducto})} : @{/productos}"
+              th:object="${producto}"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <section class="form-section"><h2>Datos del producto</h2>
+                <div class="form-grid">
+                    <label class="field field-wide">Nombre<input class="input" maxlength="100" required
+                                                                 th:field="*{nombre}" type="text"></label>
+                    <label class="field">Categoría<input class="input" maxlength="50" placeholder="Ej. Polos"
+                                                         th:field="*{categoria}" type="text"></label>
+                    <label class="field">Precio de venta (S/)<input class="input" min="0.01" required
+                                                                    step="0.01" th:field="*{precio}" type="number"></label>
+                    <label class="field">Precio mayorista (S/)<input class="input" min="0.01"
+                                                                     step="0.01" th:field="*{precioMayorista}"
+                                                                     type="number"></label>
+                    <label class="field">Mínimo para precio mayorista<input class="input" min="1"
+                                                                            th:field="*{cantidadMinimaMayorista}"
+                                                                            type="number"></label>
+                    <label class="field field-wide">Descripción<textarea class="input textarea"
+                                                                         maxlength="255" rows="3"
+                                                                         th:field="*{descripcion}"></textarea></label>
+                </div>
+            </section>
+            <section class="form-section" th:if="${!edicion}" th:object="${variante}"><h2>Primera variante y stock
+                inicial</h2>
+                <p class="section-help">Cada variante identifica una combinación de color y talla.</p>
+                <div class="form-grid">
+                    <label class="field">Color<input class="input" maxlength="30" required th:field="*{color}"
+                                                     type="text"></label>
+                    <label class="field">Talla<input class="input" maxlength="10" required th:field="*{talla}"
+                                                     type="text"></label>
+                    <label class="field">Material<input class="input" maxlength="50" th:field="*{material}" type="text"></label>
+                    <label class="field">Stock inicial<input class="input" min="0" th:field="*{stockInicial}"
+                                                             type="number" value="0"></label>
+                    <label class="field">Stock mínimo<input class="input" min="0" th:field="*{stockMinimo}"
+                                                            type="number" value="0"></label>
+                </div>
+            </section>
+            <div class="form-actions"><a class="button button-secondary" th:href="@{/productos}">Cancelar</a>
+                <button class="button button-primary" th:text="${edicion} ? 'Guardar cambios' : 'Registrar producto'"
+                        type="submit">Guardar
+                </button>
+            </div>
+        </form>
+    </main>
+</div>
+</body>
+</html>

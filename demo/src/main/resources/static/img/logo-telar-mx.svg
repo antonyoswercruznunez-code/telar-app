@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Telar MX">
+  <rect width="64" height="64" rx="16" fill="#137c78"/>
+  <!-- trama (hilos horizontales) -->
+  <g fill="#ffffff">
+    <rect x="9" y="13" width="46" height="8" rx="4"/>
+    <rect x="9" y="28" width="46" height="8" rx="4"/>
+    <rect x="9" y="43" width="46" height="8" rx="4"/>
+  </g>
+  <!-- urdimbre (hilos verticales) -->
+  <g fill="#8fdcd6" stroke="#137c78" stroke-width="1.6">
+    <rect x="13" y="9" width="8" height="46" rx="4"/>
+    <rect x="28" y="9" width="8" height="46" rx="4"/>
+    <rect x="43" y="9" width="8" height="46" rx="4"/>
+  </g>
+  <!-- cruces donde la trama pasa por encima: así el tejido se entrelaza -->
+  <g fill="#ffffff" stroke="#137c78" stroke-width="1.6">
+    <rect x="12.2" y="13" width="9.6" height="8"/>
+    <rect x="42.2" y="13" width="9.6" height="8"/>
+    <rect x="27.2" y="28" width="9.6" height="8"/>
+    <rect x="12.2" y="43" width="9.6" height="8"/>
+    <rect x="42.2" y="43" width="9.6" height="8"/>
+  </g>
+</svg>

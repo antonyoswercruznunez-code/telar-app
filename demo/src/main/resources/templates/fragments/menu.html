@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Menú lateral compartido, agrupado por módulos. Uso: th:replace="~{fragments/menu :: menu('/clientes')}" -->
+<aside class="sidebar" th:fragment="menu(activo)">
+    <a class="brand" th:href="@{/dashboard}"><img alt="Telar MX" class="brand-logo" th:src="@{/img/logo-telar-mx.svg}">TELAR <span class="brand-light">MX</span></a>
+    <th:block th:each="g : ${@menuApp.grupos()}">
+        <p class="nav-label" th:text="${g.titulo()}">Módulo</p>
+        <nav class="nav-group">
+            <a th:each="it : ${g.items()}" th:href="@{${it.url()}}" th:text="${it.titulo()}"
+               th:classappend="${it.url() == activo} ? 'active'">Opción</a>
+        </nav>
+    </th:block>
+    <form class="logout-form" method="post" th:action="@{/logout}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <button class="nav-logout" type="submit">Cerrar sesión</button>
+    </form>
+    <script defer th:src="@{/js/app.js}"></script>
+</aside>
+</body>
+</html>
