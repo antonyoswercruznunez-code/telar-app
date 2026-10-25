@@ -18,3 +18,8 @@ application-local.properties
 
 # Respaldos de la base de datos (pueden contener datos de clientes)
 respaldos/
+.env.*
+!.env.example
+application-*.local.properties
+*.pem
+*.key

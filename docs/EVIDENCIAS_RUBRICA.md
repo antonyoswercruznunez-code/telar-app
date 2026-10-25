@@ -1,3 +1,4 @@
+> Actualización de arquitectura: ver `ARQUITECTURA_INICIAL.md`. Inventario ahora separa controlador, servicio, contrato DAO e implementación JDBC. Se añaden pruebas de comportamiento y de seguridad web, además de CI para GitHub. La cantidad de pruebas y las afirmaciones de esta rúbrica eran anteriores a esta mejora: usar el reporte actual de Maven. Tener pruebas no acredita TDD retrospectivo; otros servicios todavía contienen JDBC y la separación por DAO debe ampliarse progresivamente.
 # Dónde está cada criterio de la rúbrica
 
 Rutas relativas a `demo/src/main/java/com/example/demo/` (código) y `demo/src/test/java/com/example/demo/` (pruebas).
